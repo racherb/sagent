@@ -19,18 +19,24 @@ pub struct RuntimeEnvironment {
 
 pub mod metrics{
 
-    use anyhow::{Result, anyhow};
+    pub use anyhow::{Result, anyhow};
+    
+    #[cfg(linux)]
     use psutil::process::{Process, ProcessCpuTimes, MemoryInfo};
 
     // Structure to store process metrics
     pub struct ProcessMetrics {
         pub pid: u32,
+        #[cfg(linux)]
         process: Process,
+        #[cfg(linux)]
         memory_info: MemoryInfo,
     }
 
     impl ProcessMetrics {
+        
         // Constructor for ProcessMetrics
+        #[cfg(linux)]
         pub fn new(pid: u32) -> Result<Self> {
             let process = Process::new(pid)?;
             let memory_info = process.memory_info()?;
@@ -38,28 +44,33 @@ pub mod metrics{
         }
 
         // Get CPU usage percentage of the process
+        #[cfg(linux)]
         pub fn cpu_percent(&mut self) -> Result<f32> {
             self.process.cpu_percent()
                 .map_err(|e| anyhow!("Failed to get CPU percent: {}", e))
         }
 
         // Get physical memory usage of the process
+        #[cfg(linux)]
         pub fn physical_memory(&self) -> u64 {
             self.memory_info.rss()
         }
 
         // Get virtual memory usage of the process
+        #[cfg(linux)]
         pub fn virtual_memory(&self) -> u64 {
             self.memory_info.vms()
         }
 
         // Get CPU times of the process
+        #[cfg(linux)]
         pub fn cpu_times(&mut self) -> Result<ProcessCpuTimes> {
             self.process.cpu_times()
                 .map_err(|e| anyhow!("Failed to get CPU times: {}", e))
         }
 
         // Kill the process
+        #[cfg(linux)]
         pub fn kill(&mut self) -> Result<()> {
             self.process.kill()
                 .map_err(|e| anyhow!("Failed to kill process: {}", e))

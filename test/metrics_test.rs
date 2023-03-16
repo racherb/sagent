@@ -7,8 +7,8 @@ mod tests {
     #[test]
     fn test_process_metrics() {
         // Get the pid of the current process
-        //let pid = std::process::id();
-        let mut process_metrics = ProcessMetrics::new(49506).unwrap();
+        let pid = std::process::id();
+        let mut process_metrics = ProcessMetrics::new(pid).unwrap();
 
         // Ensure that the PID is set correctly
         //assert_eq!(process_metrics.pid, pid);

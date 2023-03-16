@@ -1,0 +1,48 @@
+[package]
+name = "sagent"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+psutil = "3.2.2" 
+sysinfo = "0.28.2"
+tracing = "0.1.37"
+tracing-futures = "0.2.5"
+tonic = "0.8.3"
+anyhow = "1.0.69"
+criterion = "0.4.0"
+
+#[target.'cfg(windows)'.dependencies]
+#[dependencies.winapi]
+#version = "0.3.9"
+#features = ["shared", "um"]
+
+[dependencies.tracing-subscriber]
+version = "0.3.16"
+features = ["std", "env-filter", "fmt", "json", "local-time"]
+
+[dependencies.tokio]
+version = "1.26.0"
+features = ["process", "rt", "mio"]
+
+[dev-dependencies]
+#test = { version = "0.0.1", features = ["rustc-serialize"] }
+
+[lib]
+name = "sagent"
+path = "src/lib.rs"
+
+[[bin]]
+name = "api"
+path = "src/api.rs"
+
+[[test]]
+name = "metrics_test"
+path = "test/metrics_test.rs"
+
+[[bench]]
+name = "metrics_bench"
+harness = false
+

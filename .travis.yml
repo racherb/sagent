@@ -1,0 +1,16 @@
+language: rust
+
+os:
+  - linux
+  - osx
+  - windows
+
+# Specify the Rust versions to use for the build
+rust:
+  - stable
+  - beta
+  - nightly
+
+# Run the tests in verbose mode
+script:
+  - cargo test --verbose
